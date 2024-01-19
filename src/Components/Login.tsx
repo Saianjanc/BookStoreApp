@@ -22,7 +22,7 @@ function Login(){
                     </IconButton>
                 </InputAdornment>
             )}}/>
-        <label className="pl-[175px] mb-[30px] text-[#9D9D9D] font-[Roboto] text-sm">Forgot Password?</label>
+        <label className="flex justify-end mb-[30px] text-[#9D9D9D] font-[Roboto] text-sm">Forgot Password?</label>
         <Button variant="contained" sx={{textTransform:"none",backgroundColor:"#A03037"}}>Login</Button>
         <div className="flex justify-center items-center"><div className="flex-1 h-[1.8px] bg-[#c8c8c8] rounded"/><div className="p-5 text-[#343434] font-[system-ui] text-lg font-bold">OR</div><div className="flex-1 h-[1.8px] bg-[#c8c8c8] rounded"/></div>
         <div className="flex justify-between">
