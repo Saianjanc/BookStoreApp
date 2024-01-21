@@ -1,16 +1,30 @@
 import { useState } from "react";
 import { Button, IconButton, InputAdornment, TextField } from "@mui/material"
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { useNavigate } from "react-router-dom";
+import { userLogin } from "../utils/UserService";
 
 function Login(){
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {event.preventDefault();};
     
+    const navigate = useNavigate()
+
+    const userAuth = async() => {
+        const emailId = (document.getElementById('emailId')as HTMLInputElement).value
+        const password = (document.getElementById('password')as HTMLInputElement).value
+        const userObj = {
+            email: emailId,
+            password: password
+          }
+        await userLogin(userObj,navigate)
+    } 
+
     return(
         <div className="flex flex-col">
-        <TextField label="Email Id" variant="outlined" size="small"/><br></br>
-        <TextField label="Password" size="small" type={showPassword ? 'text' : 'password'}
+        <TextField id="emailId" label="Email Id" variant="outlined" size="small"/><br></br>
+        <TextField id="password" label="Password" size="small" type={showPassword ? 'text' : 'password'}
         InputProps={{endAdornment: (
                 <InputAdornment position="end">
                     <IconButton
@@ -23,7 +37,7 @@ function Login(){
                 </InputAdornment>
             )}}/>
         <label className="flex justify-end mb-[30px] text-[#9D9D9D] font-[Roboto] text-sm">Forgot Password?</label>
-        <Button variant="contained" sx={{textTransform:"none",backgroundColor:"#A03037"}}>Login</Button>
+        <Button onClick={userAuth} variant="contained" sx={{textTransform:"none",backgroundColor:"#A03037"}}>Login</Button>
         <div className="flex justify-center items-center"><div className="flex-1 h-[1.8px] bg-[#c8c8c8] rounded"/><div className="p-5 text-[#343434] font-[system-ui] text-lg font-bold">OR</div><div className="flex-1 h-[1.8px] bg-[#c8c8c8] rounded"/></div>
         <div className="flex justify-between">
         <Button variant="contained" sx={{textTransform:"none",backgroundColor:"#4266B2",width:'130px'}} size="large">Facebook</Button>

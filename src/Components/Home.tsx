@@ -15,7 +15,7 @@ function Home() {
         setMenu(e.currentTarget); 
     }
     return(<>
-    <div className='w-full h-[60px] mt-0 flex items-center sticky top-0 bg-[#A03037] z-10 justify-evenly gap-20'>
+    <div className='w-full h-[60px] mt-0 flex items-center sticky top-0 bg-[#A03037] z-20 justify-evenly gap-20'>
         <div className='h-[48px] pr-[30px]'>
             <a href='/home' className='flex gap-[5px] items-center'>
             <img src={logo} className='w-[40px] h-[40px]' alt='Head Logo'/>

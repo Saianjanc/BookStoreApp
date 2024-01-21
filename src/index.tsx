@@ -8,17 +8,17 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 let router = createBrowserRouter([
   {
-      path:'/',
-      element:<Home/>,
-      children:[
-        {
-          path:'home',
-          element:<BooksContainer/>,
-        },
-        {
-          path:'profile',
-          element:<LandPage/>
-        }
+    path:'/',
+    element:<LandPage/>
+  },
+  {
+    path:'/home',
+    element:<Home/>,
+    children:[
+      {
+        path:'',
+        element:<BooksContainer/>,
+      }
       ]
   }
 ])
@@ -27,7 +27,5 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
     <RouterProvider router={router} />
-  </React.StrictMode>
 );
