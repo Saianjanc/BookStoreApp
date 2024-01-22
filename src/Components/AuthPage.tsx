@@ -4,7 +4,7 @@ import { Tabs,Tab } from '@mui/material';
 import Login from './Login';
 import SignUp from './SignUp';
 
-function LandPage() {
+function AuthPage() {
     const [value, setValue] = useState(0);
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
@@ -35,4 +35,4 @@ function LandPage() {
         </div>
     )       
 }
-export default LandPage
+export default AuthPage

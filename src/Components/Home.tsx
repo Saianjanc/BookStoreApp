@@ -15,15 +15,16 @@ function Home() {
         setMenu(e.currentTarget); 
     }
     return(<>
-    <div className='w-full h-[60px] mt-0 flex items-center sticky top-0 bg-[#A03037] z-20 justify-evenly gap-20'>
+    <div className='w-full h-[60px] mt-0 flex items-center sticky top-0 bg-[#A03037] z-20 justify-around gap-20'>
+        <div className="w-[50%] flex gap-[42px]">
         <div className='h-[48px] pr-[30px]'>
             <a href='/home' className='flex gap-[5px] items-center'>
             <img src={logo} className='w-[40px] h-[40px]' alt='Head Logo'/>
             <p className='text-white text-2xl font-sans'>Bookstore</p>
             </a>
         </div>
-        <TextField className="w-[490px] bg-white rounded" placeholder="Search" size="small" type="search"
-        InputProps={{startAdornment: (<InputAdornment position="start"><Search/></InputAdornment>)}}/>
+        <TextField className="w-[95%] h-full bg-white rounded" placeholder="Search" size="small" type="search"
+        InputProps={{startAdornment: (<InputAdornment position="start"><Search/></InputAdornment>)}}/></div>
         <div className='flex xl:mr-[20px] gap-20'>
             <div onClick={handleClick} className="flex flex-col items-center text-white"><PersonOutline sx={{color:"white", fontSize:30}}/><p>Profile</p></div>
             <div className="flex flex-col items-center text-white">

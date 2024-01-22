@@ -4,8 +4,14 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNavigate } from "react-router-dom";
 import { userLogin } from "../utils/UserService";
 
+interface IError{
+    msg:string,
+    param:string
+}
+
 function Login(){
     const [showPassword, setShowPassword] = useState(false);
+    const [showError, setShowError] = useState(Array<IError>);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {event.preventDefault();};
     
@@ -18,13 +24,13 @@ function Login(){
             email: emailId,
             password: password
           }
-        await userLogin(userObj,navigate)
+        await userLogin(userObj,navigate,setShowError)
     } 
 
     return(
         <div className="flex flex-col">
-        <TextField id="emailId" label="Email Id" variant="outlined" size="small"/><br></br>
-        <TextField id="password" label="Password" size="small" type={showPassword ? 'text' : 'password'}
+        <TextField id="emailId" label="Email Id" variant="outlined" size="small" error={showError[0]?.param==="email"?true:false} helperText={showError[0]?.param==="email"?showError[0].msg:""} /><br/>
+        <TextField id="password" label="Password" size="small" type={showPassword ? 'text' : 'password'} error={showError[0]?.param==="password"?true:false} helperText={showError[0]?.param==="password"?showError[0].msg:""}
         InputProps={{endAdornment: (
                 <InputAdornment position="end">
                     <IconButton

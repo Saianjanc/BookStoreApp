@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import LandPage from './Components/LandPage';
+import AuthPage from './Components/AuthPage';
 import BooksContainer from './Components/BooksContainer';
 import Home from './Components/Home';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 let router = createBrowserRouter([
   {
     path:'/',
-    element:<LandPage/>
+    element:<AuthPage/>
   },
   {
     path:'/home',
