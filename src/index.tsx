@@ -5,6 +5,8 @@ import AuthPage from './Components/AuthPage';
 import BooksContainer from './Components/BooksContainer';
 import Home from './Components/Home';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import BookDetails from './Components/BookDetails';
+import Cart from './Components/Cart';
 
 let router = createBrowserRouter([
   {
@@ -12,12 +14,20 @@ let router = createBrowserRouter([
     element:<AuthPage/>
   },
   {
-    path:'/home',
+    path:'/book',
     element:<Home/>,
     children:[
       {
         path:'',
         element:<BooksContainer/>,
+      },
+      {
+        path:':bookId',
+        element:<BookDetails/>,
+      },
+      {
+        path:'cart',
+        element:<Cart/>,
       }
       ]
   }
