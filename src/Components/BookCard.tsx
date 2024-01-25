@@ -11,11 +11,10 @@ import img9 from '../assets/books/Image 9.png'
 import { Link } from "react-router-dom"
 
 function BookCard({book}:{book:any}){
-    const imagesList = [img1,img2,img3,img4,img5,img6,img7,img8,img9]
     return(
         <Link to={book._id} className="w-[235px] h-[275px] rounded font-[Roboto] border-[#E2E2E2] border-2">
             <div className="flex w-[233px] h-[172px] bg-[#F5F5F5] justify-center">
-                <img src={imagesList[book.bookImage]} alt={`${book.bookName} Image`} className="w-[105px] h-[135px] mt-5"/>
+                <img src={book.bookImage} alt={`${book.bookName} Image`} className="w-[105px] h-[135px] mt-5"/>
             </div>
             <div className="ml-5">
             <h1 className="font-medium">{book.bookName}</h1>

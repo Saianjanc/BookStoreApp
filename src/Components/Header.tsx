@@ -9,6 +9,16 @@ import cart from '../assets/cart.svg'
 import { useDispatch } from "react-redux";
 import { setLoaded } from "../utils/store/loadSlice";
 
+import img1 from '../assets/books/Image 1.png'
+import img2 from '../assets/books/Image 2.png'
+import img3 from '../assets/books/Image 3.png'
+import img4 from '../assets/books/Image 4.png'
+import img5 from '../assets/books/Image 5.png'
+import img6 from '../assets/books/Image 6.png'
+import img7 from '../assets/books/Image 7.png'
+import img8 from '../assets/books/Image 8.png'
+import img9 from '../assets/books/Image 9.png'
+
 function Header(){
     const [menu, setMenu] = useState(null); 
     const open = Boolean(menu);
@@ -17,11 +27,13 @@ function Header(){
         setMenu(e.currentTarget); 
     }
 
+    const imagesList = [img1,img2,img3,img4,img5,img6,img7,img8,img9]
+
     const dispatch = useDispatch()
 
     const getAllBooks = async() => {
         const data = await getBooks();
-        const newData = data.map((book:any,index:number)=>{return{...book,bookImage:index%8}})
+        const newData = data.map((book:any,index:number)=>{return{...book,bookImage:imagesList[index%8]}})
         dispatch(getBookList(newData))
         dispatch(setLoaded(true))
     }
