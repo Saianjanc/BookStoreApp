@@ -7,15 +7,20 @@ const cartSlice = createSlice({
         cartItems: []
     },
     reducers: {
+        putCartList: (state,action) => {
+            state.cartItems=action.payload
+        },
         addItemsToCart: (state,action) => {
             state.cartItems.push(action.payload)
         },
         updateCartList: (state,action) => {
-            state.cartList=action.payload
-            console.log(action.payload);
+            state.cartItems=action.payload
+        },
+        deleteCartList: (state,action) => {
+            state.cartItems=state.cartItems.filter((book)=>book._id!==action.payload)
         }
     }
 })
 
-export const {addItemsToCart,updateCartList} = cartSlice.actions
+export const {putCartList,addItemsToCart,updateCartList,deleteCartList} = cartSlice.actions
 export default cartSlice.reducer

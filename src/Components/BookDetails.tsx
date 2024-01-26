@@ -1,20 +1,11 @@
 import bookBack from '../assets/bookBack.png'
 import { AddCircleOutline, Favorite, RemoveCircleOutline, Star } from '@mui/icons-material'
 import { useEffect, useState } from 'react'
-import { Button, IconButton, Rating, TextField } from '@mui/material'
+import { Button, IconButton, Rating } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { addItemsToCart, updateCartList } from '../utils/store/cartSlice'
 import { Link, useParams } from 'react-router-dom'
-
-import img1 from '../assets/books/Image 1.png'
-import img2 from '../assets/books/Image 2.png'
-import img3 from '../assets/books/Image 3.png'
-import img4 from '../assets/books/Image 4.png'
-import img5 from '../assets/books/Image 5.png'
-import img6 from '../assets/books/Image 6.png'
-import img7 from '../assets/books/Image 7.png'
-import img8 from '../assets/books/Image 8.png'
-import img9 from '../assets/books/Image 9.png'
+import { addCartItem, updateCartQty } from '../utils/BookService'
 
 interface IBookData{
     bookName:string,
@@ -29,7 +20,7 @@ function BookDetails(){
     const [bookInfo,setBookInfo] = useState<IBookData>()
     const {bookId} = useParams()
     const [value, setValue] = useState<number | null>(2)
-    const [isInCart, setIsInCart] = useState(false)
+    const [isInCart, setIsInCart] = useState<boolean>()
     const dispatch = useDispatch()
     
     const books = useSelector((store:any)=> store.books.bookList)
@@ -39,25 +30,31 @@ function BookDetails(){
     const bookIndex = books.findIndex((book:any)=>book._id===bookId)
     const bookFront = bookInfo?.bookImage
     const [showImg,setShowImg] = useState(bookFront)
+    const cartId = cartItems.filter((book:any)=>book._id===bookId)[0]
     
     useEffect(() => {
         setBookInfo(books.filter((book:any)=>book._id===bookId)[0])
-    },[books])
+        if (cartId?.cartId) {
+            setIsInCart(true)
+        }
+    },[books,bookId])
 
     useEffect(()=>{
         setShowImg(bookFront)
-    },[bookInfo])
+    },[bookInfo,bookFront])
    
     const handleAddToCart = ()=>{
         setIsInCart(true)
+        addCartItem(bookId!)
         dispatch(addItemsToCart({...bookInfo,quantity:1}))
     }
 
     const handleAdd = ()=>{
         const bookQty = document.getElementById('bookQty')as HTMLInputElement
-        let Qty = parseInt(bookQty.value,10)
-        bookQty.value=(Qty+1).toString()
-        dispatch(updateCartList({...cartItems,quantity:bookQty.value}))
+        let Qty = parseInt(bookQty.value,10)+1
+        bookQty.value=Qty.toString()
+        // dispatch(updateCartList({...cartItems,quantity:bookQty.value}))
+        updateCartQty(cartId.cartId,bookQty.value)
     }
 
     const handleRemove = ()=>{
@@ -65,10 +62,12 @@ function BookDetails(){
         let Qty = parseInt(bookQty.value,10)
         if (Qty>1) {
         bookQty.value=(Qty-1).toString()
-        dispatch(updateCartList({...cartItems,quantity:bookQty.value}))
-        }else{
-            setIsInCart(false)
+        // dispatch(updateCartList({...cartItems,quantity:bookQty.value}))
+        updateCartQty(cartId.cartId,bookQty.value)
         }
+        //else{
+        //     setIsInCart(false)
+        // }
     }
     return(
     <div className="w-full h-full flex justify-center">
@@ -87,7 +86,7 @@ function BookDetails(){
                     <div>
                     <img className='px-[40px] py-5 w-[362px] h-[413px] border-2 border-[#D1D1D1]' src={showImg} alt='Book Front'/>
                     <div className='flex justify-between py-5'>
-                    {isInCart?<div className='flex gap-1 items-center'><IconButton onClick={handleRemove}><RemoveCircleOutline fontSize='large'/></IconButton><input id='bookQty' value={1} className='w-20 h-10 text-center text-lg border-2 rounded' type='number' readOnly/><IconButton onClick={handleAdd}><AddCircleOutline fontSize='large'/></IconButton></div>:<Button variant='contained' sx={{width:"170px", height:"40px",backgroundColor:"#A03037"}} onClick={handleAddToCart}>Add to Bag</Button>}
+                    {isInCart?<div className='flex gap-1 items-center'><IconButton onClick={handleRemove}><RemoveCircleOutline fontSize='large'/></IconButton><input id='bookQty' defaultValue={cartId.quantityToBuy} className='w-20 h-10 text-center text-lg border-2 rounded' type='number' readOnly/><IconButton onClick={handleAdd}><AddCircleOutline fontSize='large'/></IconButton></div>:<Button variant='contained' sx={{width:"170px", height:"40px",backgroundColor:"#A03037"}} onClick={handleAddToCart}>Add to Bag</Button>}
                     <Button variant='contained' sx={{width:"170px", height:"40px",backgroundColor:"#333333"}} onClick={handleAddToCart}><Favorite/>Wishlist</Button>
                     </div>
                     </div>

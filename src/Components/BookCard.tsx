@@ -1,20 +1,11 @@
 import { Star } from "@mui/icons-material"
-import img1 from '../assets/books/Image 1.png'
-import img2 from '../assets/books/Image 2.png'
-import img3 from '../assets/books/Image 3.png'
-import img4 from '../assets/books/Image 4.png'
-import img5 from '../assets/books/Image 5.png'
-import img6 from '../assets/books/Image 6.png'
-import img7 from '../assets/books/Image 7.png'
-import img8 from '../assets/books/Image 8.png'
-import img9 from '../assets/books/Image 9.png'
 import { Link } from "react-router-dom"
 
 function BookCard({book}:{book:any}){
     return(
         <Link to={book._id} className="w-[235px] h-[275px] rounded font-[Roboto] border-[#E2E2E2] border-2">
             <div className="flex w-[233px] h-[172px] bg-[#F5F5F5] justify-center">
-                <img src={book.bookImage} alt={`${book.bookName} Image`} className="w-[105px] h-[135px] mt-5"/>
+                <img src={book.bookImage} alt={`${book.bookName} Img`} className="w-[105px] h-[135px] mt-5"/>
             </div>
             <div className="ml-5">
             <h1 className="font-medium">{book.bookName}</h1>
