@@ -28,11 +28,30 @@ export async function getCartItems(){
         return data
     }
 export async function addCartItem(productId:string){
-    await axios.post(`${BASEURL}/add_cart_item/${productId}`,{},configForBooks())
+    let data:any
+    await axios.post(`${BASEURL}/add_cart_item/${productId}`,{},configForBooks()).then(res=>{
+        data = res.data.result
+    })
+    return data
     }
 export async function removeCartItem(productId:string){
     await axios.delete(`${BASEURL}/remove_cart_item/${productId}`,configForBooks())
     }
 export async function updateCartQty(productId:string,quantity:string){
     await axios.put(`${BASEURL}/cart_item_quantity/${productId}`,{"quantityToBuy":quantity},configForBooks())
+    }
+
+export async function addWishList(productId:string){
+    await axios.post(`${BASEURL}/add_wish_list/${productId}`,{},configForBooks())
+    }
+
+export async function getWishlistItems(){
+    let data:any
+    await axios.get(`${BASEURL}/get_wishlist_items`,configForBooks()).then(res => {
+        data=res.data.result
+        })
+        return data
+    }
+export async function removeWishlistItem(productId:string){
+    await axios.delete(`${BASEURL}/remove_wishlist_item/${productId}`,configForBooks())
     }

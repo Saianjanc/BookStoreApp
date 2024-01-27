@@ -7,6 +7,7 @@ import Home from './Components/Home';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import BookDetails from './Components/BookDetails';
 import Cart from './Components/Cart';
+import WishList from './Components/WishList';
 
 let router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ let router = createBrowserRouter([
       {
         path:'cart',
         element:<Cart/>,
+      },
+      {
+        path:'wishlist',
+        element:<WishList/>,
       }
       ]
   }

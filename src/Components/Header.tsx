@@ -1,12 +1,12 @@
-import { PersonOutline, Search } from "@mui/icons-material";
-import { Button, InputAdornment, Menu, TextField } from "@mui/material"
+import { FavoriteBorder, MarkunreadMailboxOutlined, PersonOutline, Search } from "@mui/icons-material";
+import { Badge, Button, InputAdornment, Menu, TextField } from "@mui/material"
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getBooks } from "../utils/BookService";
+import { getBooks, getCartItems, getWishlistItems } from "../utils/BookService";
 import { getBookList } from "../utils/store/bookSlice";
 import logo from '../assets/logo.svg'
 import cart from '../assets/cart.svg'
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setLoaded } from "../utils/store/loadSlice";
 
 import img1 from '../assets/books/Image 1.png'
@@ -18,6 +18,8 @@ import img6 from '../assets/books/Image 6.png'
 import img7 from '../assets/books/Image 7.png'
 import img8 from '../assets/books/Image 8.png'
 import img9 from '../assets/books/Image 9.png'
+import { putCartList } from "../utils/store/cartSlice";
+import { putWishList } from "../utils/store/wishSlice";
 
 function Header(){
     const [menu, setMenu] = useState(null); 
@@ -29,16 +31,33 @@ function Header(){
 
     const imagesList = [img1,img2,img3,img4,img5,img6,img7,img8,img9]
 
+    const books = useSelector((store:any)=> store.books.bookList)
+    const cartItems = useSelector((store:any)=> store.cart.cartItems)
     const dispatch = useDispatch()
 
     const getAllBooks = async() => {
         const data = await getBooks();
         const newData = data.map((book:any,index:number)=>{return{...book,bookImage:imagesList[index%8]}})
         dispatch(getBookList(newData))
-        dispatch(setLoaded(true))
+    }
+
+    const getCartList = async()=>{
+        const cartList = await getCartItems()
+        const bookList = cartList.map((cartBook:any)=>{return{...books.filter((book:any)=>book._id===cartBook.product_id._id)[0],cartId:cartBook._id,quantityToBuy:cartBook.quantityToBuy}})
+        dispatch(putCartList(bookList))
+    }
+
+    const getWishList =async () => {
+        const wishList = await getWishlistItems()
+        const bookList = wishList.map((wishBook:any)=>{return books.filter((book:any)=>book._id===wishBook.product_id._id)[0]})
+        dispatch(putWishList(bookList))
+        if (bookList[0]!==undefined) {
+            dispatch(setLoaded(true))
+        }else if(!bookList.length){dispatch(setLoaded(true))}
     }
 
     useEffect(()=>{getAllBooks()},[])
+    useEffect(()=>{getCartList();getWishList()},[books])
 
     return(<div className='w-full h-[60px] mt-0 flex items-center sticky top-0 bg-[#A03037] z-20 justify-around gap-20'>
     <div className="w-[50%] flex gap-[42px]">
@@ -50,19 +69,23 @@ function Header(){
     </div>
     <TextField className="w-[95%] h-full bg-white rounded" placeholder="Search" size="small" type="search"
     InputProps={{startAdornment: (<InputAdornment position="start"><Search/></InputAdornment>)}}/></div>
-    <div className='flex xl:mr-[20px] gap-20 mt-1'>
+    <div className='flex gap-20 items-center'>
         <div onClick={handleClick} className="flex flex-col items-center text-white"><PersonOutline sx={{color:"white", fontSize:30}}/><p>Profile</p></div>
-        <Link to={"cart"} className="flex flex-col items-center text-white">
-        <img src={cart} alt="cart" width="28px"/> 
-        <p>Cart</p>
+        <Link to={"cart"} className="flex flex-col items-center text-white mt-[4px]">
+            <Badge badgeContent={cartItems.length} color="primary">
+            <img src={cart} alt="cart" width="24px"/> 
+            </Badge>
+            <p className="leading-tight">Cart</p>
         </Link>
     </div>
     <Menu id="simple-menu" open={open} onClose={()=>setMenu(null)}
     anchorEl={menu}>
-    <div className='w-[240px] flex flex-col items-center gap-[20px]'>
-        <div className="flex flex-col mt-[10px] ml-[80px]">
-        </div>
-    <Button variant="contained">Sign out</Button>
+    <div className='w-[240px] flex flex-col gap-[12px] pl-8'>
+        <span>Hello User,</span>
+        <Link to={'profile'}><PersonOutline/> Profile</Link>
+        <Link to={'orders'}><MarkunreadMailboxOutlined/> My Orders</Link>
+        <Link to={'wishlist'}><FavoriteBorder/> My Wishlist</Link>
+        <Button variant="outlined" sx={{width:'150px',height:'40px',borderColor:"#A03037",color:"#A03037"}}>Logout</Button>
     </div>
   </Menu>
 </div>)

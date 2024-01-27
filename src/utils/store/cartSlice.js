@@ -16,7 +16,7 @@ const cartSlice = createSlice({
         updateCartList: (state,action) => {
             state.cartItems=action.payload
         },
-        deleteCartList: (state,action) => {
+        deleteCartItem: (state,action) => {
             state.cartItems=state.cartItems.filter((book)=>book._id!==action.payload)
         }
     }

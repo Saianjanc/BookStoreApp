@@ -5,7 +5,8 @@ import { Button, IconButton, Rating } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { addItemsToCart, updateCartList } from '../utils/store/cartSlice'
 import { Link, useParams } from 'react-router-dom'
-import { addCartItem, updateCartQty } from '../utils/BookService'
+import { addCartItem, addWishList, updateCartQty } from '../utils/BookService'
+import { addWishListItem } from '../utils/store/wishSlice'
 
 interface IBookData{
     bookName:string,
@@ -21,21 +22,27 @@ function BookDetails(){
     const {bookId} = useParams()
     const [value, setValue] = useState<number | null>(2)
     const [isInCart, setIsInCart] = useState<boolean>()
+    const [wishList, setWishList] = useState<boolean>()
     const dispatch = useDispatch()
     
     const books = useSelector((store:any)=> store.books.bookList)
     const dataloaded = useSelector((store:any)=> store.loaded.dataLoaded)
     const cartItems = useSelector((store:any)=> store.cart.cartItems)
+    const WishListItems = useSelector((store:any)=> store.wish.wishListItems)
 
     const bookIndex = books.findIndex((book:any)=>book._id===bookId)
     const bookFront = bookInfo?.bookImage
     const [showImg,setShowImg] = useState(bookFront)
     const cartId = cartItems.filter((book:any)=>book._id===bookId)[0]
+    const wishId = WishListItems.filter((book:any)=>book._id===bookId)[0]
     
     useEffect(() => {
         setBookInfo(books.filter((book:any)=>book._id===bookId)[0])
         if (cartId?.cartId) {
             setIsInCart(true)
+        }
+        if(wishId?._id){
+            setWishList(true)
         }
     },[books,bookId])
 
@@ -43,10 +50,10 @@ function BookDetails(){
         setShowImg(bookFront)
     },[bookInfo,bookFront])
    
-    const handleAddToCart = ()=>{
+    const handleAddToCart = async()=>{
         setIsInCart(true)
-        addCartItem(bookId!)
-        dispatch(addItemsToCart({...bookInfo,quantity:1}))
+        const newcartId = await addCartItem(bookId!)
+        dispatch(addItemsToCart({...bookInfo,quantityToBuy:1,cartId:newcartId._id}))
     }
 
     const handleAdd = ()=>{
@@ -65,10 +72,14 @@ function BookDetails(){
         // dispatch(updateCartList({...cartItems,quantity:bookQty.value}))
         updateCartQty(cartId.cartId,bookQty.value)
         }
-        //else{
-        //     setIsInCart(false)
-        // }
     }
+
+    const handleWishList = ()=>{
+        addWishList(bookId!)
+        dispatch(addWishListItem(bookInfo))
+        setWishList(true)
+    }
+
     return(
     <div className="w-full h-full flex justify-center">
         {dataloaded?
@@ -86,8 +97,8 @@ function BookDetails(){
                     <div>
                     <img className='px-[40px] py-5 w-[362px] h-[413px] border-2 border-[#D1D1D1]' src={showImg} alt='Book Front'/>
                     <div className='flex justify-between py-5'>
-                    {isInCart?<div className='flex gap-1 items-center'><IconButton onClick={handleRemove}><RemoveCircleOutline fontSize='large'/></IconButton><input id='bookQty' defaultValue={cartId.quantityToBuy} className='w-20 h-10 text-center text-lg border-2 rounded' type='number' readOnly/><IconButton onClick={handleAdd}><AddCircleOutline fontSize='large'/></IconButton></div>:<Button variant='contained' sx={{width:"170px", height:"40px",backgroundColor:"#A03037"}} onClick={handleAddToCart}>Add to Bag</Button>}
-                    <Button variant='contained' sx={{width:"170px", height:"40px",backgroundColor:"#333333"}} onClick={handleAddToCart}><Favorite/>Wishlist</Button>
+                    {isInCart?<div className='flex gap-1 items-center'><IconButton onClick={handleRemove}><RemoveCircleOutline fontSize='large'/></IconButton><input id='bookQty' defaultValue={cartId?cartId.quantityToBuy:1} className='w-20 h-10 text-center text-lg border-2 rounded' type='number' readOnly/><IconButton onClick={handleAdd}><AddCircleOutline fontSize='large'/></IconButton></div>:<Button variant='contained' sx={{width:"170px", height:"40px",backgroundColor:"#A03037"}} onClick={handleAddToCart}>Add to Bag</Button>}
+                    {wishList?<div className='w-[170px] h-[40px] bg-[#e2e2e2] text-black text-center p-[7px] rounded'><div className='flex justify-center items-center'><Favorite sx={{color:'red'}}/>Added To Wishlist!</div></div>:<Button variant='contained' sx={{width:"170px", height:"40px",backgroundColor:"#333333"}} onClick={handleWishList}><Favorite/>Wishlist</Button>}
                     </div>
                     </div>
                     <div className="ml-5 flex flex-col gap-2">
