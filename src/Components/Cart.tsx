@@ -28,7 +28,7 @@ function Cart(){
                 <div className="w-[774px] min-h-[250px] border-[#707070] border">
                     <div className="text-lg font-semibold p-5">My cart ({cartItems.length})</div>
                     <div className="flex flex-col gap-2 p-5">
-                    {cartItems.map((book:any)=><CartBookCard key={book.cartId} book={book}/>)}
+                    {cartItems.map((book:any,index:number)=><CartBookCard key={index} index={index} book={book}/>)}
                     <div className="flex justify-end"><Button variant="contained" sx={{backgroundColor:"#3371B5"}}>Place order</Button></div>
                     </div>
                 </div>
