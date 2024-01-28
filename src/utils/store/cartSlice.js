@@ -14,7 +14,7 @@ const cartSlice = createSlice({
             state.cartItems.push(action.payload)
         },
         updateCartList: (state,action) => {
-            state.cartItems=action.payload
+            state.cartItems=state.cartItems.map((cartBook)=>{if(cartBook._id===action.payload.id){return {...cartBook,quantityToBuy:action.payload.quantityToBuy}}return cartBook})
         },
         deleteCartItem: (state,action) => {
             state.cartItems=state.cartItems.filter((book)=>book._id!==action.payload)
@@ -22,5 +22,5 @@ const cartSlice = createSlice({
     }
 })
 
-export const {putCartList,addItemsToCart,updateCartList,deleteCartList} = cartSlice.actions
+export const {putCartList,addItemsToCart,updateCartList,deleteCartItem} = cartSlice.actions
 export default cartSlice.reducer

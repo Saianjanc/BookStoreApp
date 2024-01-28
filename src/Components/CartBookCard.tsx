@@ -2,14 +2,14 @@ import { AddCircleOutline, RemoveCircleOutline } from "@mui/icons-material"
 import { Button, IconButton } from "@mui/material"
 import { removeCartItem, updateCartQty } from "../utils/BookService"
 import { useDispatch } from "react-redux"
-import { deleteCartList } from "../utils/store/cartSlice"
+import { deleteCartItem } from "../utils/store/cartSlice"
 
 function CartBookCard({book,index}:{book:any,index:number}){
     const dispatch = useDispatch()
 
     const removeItem = async()=>{
         await removeCartItem(book.cartId)
-        dispatch(deleteCartList(book._id))
+        dispatch(deleteCartItem(book._id))
     }
 
     const handleAdd = ()=>{

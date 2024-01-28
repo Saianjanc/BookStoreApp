@@ -34,7 +34,7 @@ function BookDetails(){
     const bookFront = bookInfo?.bookImage
     const [showImg,setShowImg] = useState(bookFront)
     const cartId = cartItems.filter((book:any)=>book._id===bookId)[0]
-    const wishId = WishListItems.filter((book:any)=>book._id===bookId)[0]
+    const wishId = WishListItems.filter((book:any)=>book?._id===bookId)[0]
     
     useEffect(() => {
         setBookInfo(books.filter((book:any)=>book._id===bookId)[0])
@@ -60,7 +60,7 @@ function BookDetails(){
         const bookQty = document.getElementById('bookQty')as HTMLInputElement
         let Qty = parseInt(bookQty.value,10)+1
         bookQty.value=Qty.toString()
-        // dispatch(updateCartList({...cartItems,quantity:bookQty.value}))
+        dispatch(updateCartList({quantityToBuy:bookQty.value,id:bookId}))
         updateCartQty(cartId.cartId,bookQty.value)
     }
 
@@ -69,7 +69,7 @@ function BookDetails(){
         let Qty = parseInt(bookQty.value,10)
         if (Qty>1) {
         bookQty.value=(Qty-1).toString()
-        // dispatch(updateCartList({...cartItems,quantity:bookQty.value}))
+        dispatch(updateCartList(bookQty.value))
         updateCartQty(cartId.cartId,bookQty.value)
         }
     }
