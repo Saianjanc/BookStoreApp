@@ -42,18 +42,22 @@ function Header(){
     }
 
     const getCartList = async()=>{
+        if(books.length){
         const cartList = await getCartItems()
         const bookList = cartList.map((cartBook:any)=>{return{...books.filter((book:any)=>book._id===cartBook.product_id._id)[0],cartId:cartBook._id,quantityToBuy:cartBook.quantityToBuy}})
         dispatch(putCartList(bookList))
+        }
     }
 
     const getWishList =async () => {
+        if(books.length){
         const wishList = await getWishlistItems()
         const bookList = wishList.map((wishBook:any)=>{return books.filter((book:any)=>book._id===wishBook.product_id._id)[0]})
         dispatch(putWishList(bookList))
         if (bookList[0]!==undefined) {
             dispatch(setLoaded(true))
         }else if(!bookList.length){dispatch(setLoaded(true))}
+        }
     }
 
     useEffect(()=>{getAllBooks()},[])

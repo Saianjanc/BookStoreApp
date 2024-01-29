@@ -8,6 +8,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import BookDetails from './Components/BookDetails';
 import Cart from './Components/Cart';
 import WishList from './Components/WishList';
+import MyOrders from './Components/MyOrders';
 
 let router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ let router = createBrowserRouter([
       {
         path:'wishlist',
         element:<WishList/>,
+      },
+      {
+        path:'orders',
+        element:<MyOrders/>,
       }
       ]
   }

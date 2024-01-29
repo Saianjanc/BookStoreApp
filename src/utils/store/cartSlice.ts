@@ -10,14 +10,14 @@ const cartSlice = createSlice({
         putCartList: (state,action) => {
             state.cartItems=action.payload
         },
-        addItemsToCart: (state,action) => {
+        addItemsToCart: (state:any,action) => {
             state.cartItems.push(action.payload)
         },
-        updateCartList: (state,action) => {
-            state.cartItems=state.cartItems.map((cartBook)=>{if(cartBook._id===action.payload.id){return {...cartBook,quantityToBuy:action.payload.quantityToBuy}}return cartBook})
+        updateCartList: (state:any,action) => {
+            state.cartItems=state.cartItems.map((cartBook:any)=>{if(cartBook._id===action.payload.id){return {...cartBook,quantityToBuy:action.payload.quantityToBuy}}return cartBook})
         },
         deleteCartItem: (state,action) => {
-            state.cartItems=state.cartItems.filter((book)=>book._id!==action.payload)
+            state.cartItems=state.cartItems.filter((book:any)=>book._id!==action.payload)
         }
     }
 })
