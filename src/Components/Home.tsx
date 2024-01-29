@@ -8,7 +8,7 @@ function Home() {
     return(<Provider store={appStore}>
     <Header/>
     <Outlet />
-    <div className='flex items-center w-full h-[50px] mt-10 bg-[#2E1D1E] text-white'>
+    <div className='absolute bottom-0 flex items-center w-full h-[50px] mt-10 bg-[#2E1D1E] text-white'>
         <p className="ml-20">Copyright © 2020, Bookstore Private Limited. All Rights Reserved</p>
     </div>
     </Provider>)
