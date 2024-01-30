@@ -1,13 +1,25 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import BookCard from "./BookCard"
 import { useDispatch, useSelector } from "react-redux";
 import { getBookList } from "../utils/store/bookSlice";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Pagination } from "@mui/material";
 
 function BooksContainer(){
+    const [page, setPage] = useState(1)
     const books = useSelector((store:any)=> store.books.bookList)
     const dataloaded = useSelector((store:any)=> store.loaded.dataLoaded)
     const dispatch = useDispatch()
+
+    const count = Math.ceil(books.length / 16)
+    let data: any[] = []
+
+    const handleChange = (e:any,p:any) => {
+        setPage(p)
+    };
+    
+    const begin = (page - 1) * 16;
+    const end = begin + 16;
+    data=books.slice(begin, end)
 
     const sort = ()=>{
         const sortSelect = (document.getElementById("sortSelect") as HTMLInputElement).value
@@ -42,8 +54,10 @@ function BooksContainer(){
         </select>
         </div>
         <div className="grid grid-cols-4 gap-[94px]">
-            {books.map((book:any) => (<BookCard key={book._id} book={book}/>))}
+            {data.map((book:any) => (<BookCard key={book._id} book={book}/>))}
         </div>
+        <Pagination count={count} size="large" page={page}
+        variant="outlined" shape="rounded" onChange={handleChange}/>
         </div>:<CircularProgress className="m-20"/>}
     </div>)
 }

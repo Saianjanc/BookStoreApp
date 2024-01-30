@@ -55,3 +55,11 @@ export async function getWishlistItems(){
 export async function removeWishlistItem(productId:string){
     await axios.delete(`${BASEURL}/remove_wishlist_item/${productId}`,configForBooks())
     }
+
+export async function addOrder(order:any){
+    let data:any
+    await axios.post(`${BASEURL}/add/order`,{"orders": order},configForBooks()).then(res=>{
+        data = res.data.result
+    })
+    return data
+    }
