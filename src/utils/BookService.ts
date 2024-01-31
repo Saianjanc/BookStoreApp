@@ -63,3 +63,18 @@ export async function addOrder(order:any){
     })
     return data
     }
+
+export async function bookFeedback(productId:string,rating:number,comment:string){
+    await axios.post(`${BASEURL}/add/feedback/${productId}`,{
+        "comment": comment,
+        "rating": rating
+      },configForBooks())
+    }
+
+export async function getFeedback(productId:string){
+    let data:any
+    await axios.get(`${BASEURL}/get/feedback/${productId}`,configForBooks()).then(res=>{
+        data = res.data.result
+    })
+    return data
+    }

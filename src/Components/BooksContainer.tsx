@@ -56,7 +56,7 @@ function BooksContainer(){
         <div className="grid grid-cols-4 gap-[94px]">
             {data.map((book:any) => (<BookCard key={book._id} book={book}/>))}
         </div>
-        <Pagination count={count} size="large" page={page}
+        <Pagination count={count} size="large" page={page} sx={{display:"flex",justifyContent:"center",marginTop:"40px",'.css-kvsszq-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected':{backgroundColor:"#8F2B2F",color:"white"}}}
         variant="outlined" shape="rounded" onChange={handleChange}/>
         </div>:<CircularProgress className="m-20"/>}
     </div>)

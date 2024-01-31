@@ -5,8 +5,9 @@ import { Button, IconButton, Rating } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { addItemsToCart, updateCartList } from '../utils/store/cartSlice'
 import { Link, useParams } from 'react-router-dom'
-import { addCartItem, addWishList, updateCartQty } from '../utils/BookService'
+import { addCartItem, addWishList, bookFeedback, getFeedback, updateCartQty } from '../utils/BookService'
 import { addWishListItem } from '../utils/store/wishSlice'
+import { getReviewList } from '../utils/store/reviewSlice'
 
 interface IBookData{
     bookName:string,
@@ -29,13 +30,14 @@ function BookDetails(){
     const books = useSelector((store:any)=> store.books.bookList)
     const dataloaded = useSelector((store:any)=> store.loaded.dataLoaded)
     const cartItems = useSelector((store:any)=> store.cart.cartItems)
-    const WishListItems = useSelector((store:any)=> store.wish.wishListItems)
+    const wishListItems = useSelector((store:any)=> store.wish.wishListItems)
+    const feedBackList = useSelector((store:any)=> store.review.reviewList)
 
     const bookIndex = books.findIndex((book:any)=>book._id===bookId)
     const bookFront = bookInfo?.bookImage
     const [showImg,setShowImg] = useState(bookFront)
     const cartId = cartItems.filter((book:any)=>book._id===bookId)[0]
-    const wishId = WishListItems.filter((book:any)=>book?._id===bookId)[0]
+    const wishId = wishListItems.filter((book:any)=>book?._id===bookId)[0]
     
     useEffect(() => {
         setBookInfo(books.filter((book:any)=>book._id===bookId)[0])
@@ -46,7 +48,8 @@ function BookDetails(){
             setWishList(true)
         }
     },[books,cartItems])
-
+    
+    useEffect(()=>{getReviews()},[])
     useEffect(()=>{
         setShowImg(bookFront)
     },[bookInfo])
@@ -78,6 +81,18 @@ function BookDetails(){
         addWishList(bookId!)
         dispatch(addWishListItem(bookInfo))
         setWishList(true)
+    }
+
+    const sendFeeback = async()=>{
+        const comment = (document.getElementById('comment') as HTMLInputElement)
+        await bookFeedback(bookId!,value!,comment.value)
+        setValue(0)
+        comment.value = ''
+    }
+
+    const getReviews = async()=>{
+        const feedback = await getFeedback(bookId!)
+        dispatch(getReviewList(feedback))
     }
 
     return(
@@ -123,10 +138,22 @@ function BookDetails(){
                         />
                         </div>
                         <div className='w-[528px] h-[64px] bg-white'>
-                            <input className='text-[#707070] w-[300px]' placeholder='Write your review'/>
+                            <input id='comment' className='text-[#707070] w-[300px]' placeholder='Write your review'/>
                         </div>
-                        <div className='flex justify-end px-4'><Button variant='contained' size='small' sx={{width:'76px', backgroundColor:"#3371B5"}}>Submit</Button></div>
+                        <div className='flex justify-end px-4'><Button variant='contained' size='small' sx={{width:'76px', backgroundColor:"#3371B5"}} onClick={sendFeeback}>Submit</Button></div>
                        </div>
+                       {feedBackList.map((review:any,index:number)=><div key={index} className="flex justify-center mt-5 mb-20">
+                        <div className="w-full flex gap-5">
+                            <div className="border w-[40px] h-[40px] border-[#E4E4E4] bg-[#F5F5F5] rounded-full flex justify-center items-center">
+                                <h1 className="text-xs text-[#707070]">{review.user_id.fullName[0]+review.user_id.fullName[1]}</h1>
+                                </div>
+                                <div>
+                                <h1 className="font-bold">{review.user_id.fullName}</h1>
+                                <Rating name="read-only" value={review.rating} readOnly />
+                                <p className="text-wrap text-sm text-slate-500">{review.comment}</p>
+                                </div>
+                                </div>
+                                </div>)}
                     </div>
                 </div>
             </div>

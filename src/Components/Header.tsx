@@ -21,8 +21,9 @@ import img9 from '../assets/books/Image 9.png'
 import { putCartList } from "../utils/store/cartSlice";
 import { putWishList } from "../utils/store/wishSlice";
 
-function Header(){
+function Header(){    
     const [menu, setMenu] = useState(null); 
+    const [name, setName] = useState("Profile"); 
     const open = Boolean(menu);
 
     const handleClick = (e:any) => {
@@ -33,6 +34,7 @@ function Header(){
 
     const books = useSelector((store:any)=> store.books.bookList)
     const cartItems = useSelector((store:any)=> store.cart.cartItems)
+
     const dispatch = useDispatch()
 
     const getAllBooks = async() => {
@@ -44,6 +46,7 @@ function Header(){
     const getCartList = async()=>{
         if(books.length){
         const cartList = await getCartItems()
+        setName(cartList[0].user_id.fullName)
         const bookList = cartList.map((cartBook:any)=>{return{...books.filter((book:any)=>book._id===cartBook.product_id._id)[0],cartId:cartBook._id,quantityToBuy:cartBook.quantityToBuy}})
         dispatch(putCartList(bookList))
         }
@@ -74,7 +77,7 @@ function Header(){
     <TextField className="w-[95%] h-full bg-white rounded" placeholder="Search" size="small" type="search"
     InputProps={{startAdornment: (<InputAdornment position="start"><Search/></InputAdornment>)}}/></div>
     <div className='flex gap-20 items-center'>
-        <div onClick={handleClick} className="flex flex-col items-center text-white"><PersonOutline sx={{color:"white", fontSize:30}}/><p>Profile</p></div>
+        <div onClick={handleClick} className="flex flex-col items-center text-white"><PersonOutline sx={{color:"white", fontSize:30}}/><p>{name}</p></div>
         <Link to={"cart"} className="flex flex-col items-center text-white mt-[4px]">
             <Badge badgeContent={cartItems.length} color="primary">
             <img src={cart} alt="cart" width="24px"/> 
@@ -85,7 +88,7 @@ function Header(){
     <Menu id="simple-menu" open={open} onClose={()=>setMenu(null)}
     anchorEl={menu}>
     <div className='w-[240px] flex flex-col gap-[12px] pl-8'>
-        <span>Hello User,</span>
+        <span>Hello {name},</span>
         <Link to={'profile'}><PersonOutline/> Profile</Link>
         <Link to={'orders'}><MarkunreadMailboxOutlined/> My Orders</Link>
         <Link to={'wishlist'}><FavoriteBorder/> My Wishlist</Link>
