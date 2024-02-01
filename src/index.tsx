@@ -9,6 +9,7 @@ import BookDetails from './Components/BookDetails';
 import Cart from './Components/Cart';
 import WishList from './Components/WishList';
 import MyOrders from './Components/MyOrders';
+import SuccessPage from './Components/SuccessPage';
 
 let router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ let router = createBrowserRouter([
       {
         path:'orders',
         element:<MyOrders/>,
+      },
+      {
+        path:'orderplaced',
+        element:<SuccessPage/>,
       }
       ]
   }

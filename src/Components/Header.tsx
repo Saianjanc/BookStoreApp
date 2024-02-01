@@ -47,7 +47,7 @@ function Header(){
         if(books.length){
         const cartList = await getCartItems()
         setName(cartList[0].user_id.fullName)
-        const bookList = cartList.map((cartBook:any)=>{return{...books.filter((book:any)=>book._id===cartBook.product_id._id)[0],cartId:cartBook._id,quantityToBuy:cartBook.quantityToBuy}})
+        const bookList = cartList.map((cartBook:any)=>{return{...books.filter((book:any)=>book._id===cartBook.product_id._id)[0],cartId:cartBook._id,quantityToBuy:cartBook.quantityToBuy,user_id:cartBook.user_id}})
         dispatch(putCartList(bookList))
         }
     }
@@ -79,7 +79,7 @@ function Header(){
     <div className='flex gap-20 items-center'>
         <div onClick={handleClick} className="flex flex-col items-center text-white"><PersonOutline sx={{color:"white", fontSize:30}}/><p>{name}</p></div>
         <Link to={"cart"} className="flex flex-col items-center text-white mt-[4px]">
-            <Badge badgeContent={cartItems.length} color="primary">
+            <Badge badgeContent={cartItems.length} color="primary" sx={{'.css-zza0ns-MuiBadge-badge':{backgroundColor:'white',color:'black',top:'5px'}}}>
             <img src={cart} alt="cart" width="24px"/> 
             </Badge>
             <p className="leading-tight">Cart</p>
@@ -88,7 +88,7 @@ function Header(){
     <Menu id="simple-menu" open={open} onClose={()=>setMenu(null)}
     anchorEl={menu}>
     <div className='w-[240px] flex flex-col gap-[12px] pl-8'>
-        <span>Hello {name},</span>
+        <span className="font-bold">Hello {name},</span>
         <Link to={'profile'}><PersonOutline/> Profile</Link>
         <Link to={'orders'}><MarkunreadMailboxOutlined/> My Orders</Link>
         <Link to={'wishlist'}><FavoriteBorder/> My Wishlist</Link>
