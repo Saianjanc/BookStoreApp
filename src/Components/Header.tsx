@@ -80,7 +80,7 @@ function Header(){
         <div onClick={handleClick} className="flex flex-col items-center text-white"><PersonOutline sx={{color:"white", fontSize:30}}/><p>{name}</p></div>
         <Link to={"cart"} className="flex flex-col items-center text-white mt-[4px]">
             <Badge badgeContent={cartItems.length} color="primary" sx={{'.css-zza0ns-MuiBadge-badge':{backgroundColor:'white',color:'black',top:'5px'}}}>
-            <img src={cart} alt="cart" width="24px"/> 
+            <img src={cart} alt="cart" width="24px"/>
             </Badge>
             <p className="leading-tight">Cart</p>
         </Link>
