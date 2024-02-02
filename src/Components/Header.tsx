@@ -46,7 +46,7 @@ function Header(){
     const getCartList = async()=>{
         if(books.length){
         const cartList = await getCartItems()
-        setName(cartList[0].user_id.fullName)
+        if(cartList.length){setName(cartList[0].user_id.fullName)}
         const bookList = cartList.map((cartBook:any)=>{return{...books.filter((book:any)=>book._id===cartBook.product_id._id)[0],cartId:cartBook._id,quantityToBuy:cartBook.quantityToBuy,user_id:cartBook.user_id}})
         dispatch(putCartList(bookList))
         }

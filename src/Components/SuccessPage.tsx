@@ -7,7 +7,7 @@ function SuccessPage(){
             <img src={popperhead} alt='popperHead' width="200px"/>
             <h1 className='text-2xl text-[#333232] font-semibold'>Order Placed Successfully</h1>
             <img src={popperfoot} alt='popperFoot' width="120px"/>
-            <p className='w-[355px] text-center'>hurray!!! your order is confirmed the order id is #123456 save the order id for further communication..</p>
+            <p className='w-[355px] text-center'><span className='font-semibold'>Hurray!!!</span> your order is confirmed the order id is #123456 save the order id for further communication..</p>
             <table className='w-[780px]'>
                 <thead>
                 <tr className='bg-[#DCDCDC] h-[42px]'>

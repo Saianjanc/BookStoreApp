@@ -56,12 +56,12 @@ function BookDetails(){
    
     const handleAddToCart = async()=>{
         const newcartId = await addCartItem(bookId!)
-        dispatch(addItemsToCart({...bookInfo,quantityToBuy:1,cartId:newcartId._id}))
+        dispatch(addItemsToCart({...bookInfo,quantityToBuy:1,cartId:newcartId._id,user_id:newcartId.user_id}))
     }
 
     const handleAdd = ()=>{
         let Qty = cartId.quantityToBuy
-        if (Qty<=cartId.quantity) {
+        if (Qty<cartId.quantity) {
         Qty++
         dispatch(updateCartList({quantityToBuy:Qty,id:bookId}))
         updateCartQty(cartId.cartId,Qty)
@@ -112,7 +112,7 @@ function BookDetails(){
                     <div>
                     <img className='px-[40px] py-5 w-[362px] h-[413px] border-2 border-[#D1D1D1]' src={showImg} alt='Book Front'/>
                     <div className='flex justify-between py-5'>
-                    {isInCart?<div className='h-[40px] flex gap-1 items-center'><IconButton onClick={handleRemove} disabled={cartId.quantityToBuy===1?true:false}><RemoveCircleOutline fontSize='large'/></IconButton><div className='w-[66px] h-[38px] p-1 text-center border-2 rounded'>{cartId.quantityToBuy}</div><IconButton onClick={handleAdd} disabled={cartId.quantityToBuy<=cartId.quantity?false:true}><AddCircleOutline fontSize='large'/></IconButton></div>:<Button variant='contained' sx={{width:"170px", height:"40px",backgroundColor:"#A03037"}} onClick={handleAddToCart}>Add to Bag</Button>}
+                    {isInCart?<div className='h-[40px] flex gap-1 items-center'><IconButton onClick={handleRemove} disabled={cartId.quantityToBuy===1?true:false}><RemoveCircleOutline fontSize='large'/></IconButton><div className='w-[66px] h-[38px] p-1 text-center border-2 rounded'>{cartId.quantityToBuy}</div><IconButton onClick={handleAdd} disabled={cartId.quantityToBuy<cartId.quantity?false:true}><AddCircleOutline fontSize='large'/></IconButton></div>:<Button variant='contained' sx={{width:"170px", height:"40px",backgroundColor:"#A03037"}} onClick={handleAddToCart}>Add to Bag</Button>}
                     {wishList?<div className='w-[170px] h-[40px] bg-[#e2e2e2] text-black text-center p-[7px] rounded'><div className='flex justify-center items-center'><Favorite sx={{color:'red'}}/>Added To Wishlist!</div></div>:<Button className='flex gap-2' variant='contained' sx={{width:"170px", height:"40px",backgroundColor:"#333333"}} onClick={handleWishList}><Favorite/>Wishlist</Button>}
                     </div>
                     </div>

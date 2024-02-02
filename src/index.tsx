@@ -10,6 +10,7 @@ import Cart from './Components/Cart';
 import WishList from './Components/WishList';
 import MyOrders from './Components/MyOrders';
 import SuccessPage from './Components/SuccessPage';
+import ProfilePage from './Components/ProfilePage';
 
 let router = createBrowserRouter([
   {
@@ -22,27 +23,31 @@ let router = createBrowserRouter([
     children:[
       {
         path:'',
-        element:<BooksContainer/>,
+        element:<BooksContainer/>
       },
       {
         path:':bookId',
-        element:<BookDetails/>,
+        element:<BookDetails/>
       },
       {
         path:'cart',
-        element:<Cart/>,
+        element:<Cart/>
       },
       {
         path:'wishlist',
-        element:<WishList/>,
+        element:<WishList/>
       },
       {
         path:'orders',
-        element:<MyOrders/>,
+        element:<MyOrders/>
       },
       {
         path:'orderplaced',
-        element:<SuccessPage/>,
+        element:<SuccessPage/>
+      },
+      {
+        path:'profile',
+        element:<ProfilePage/>
       }
       ]
   }
