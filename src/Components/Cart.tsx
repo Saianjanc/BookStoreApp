@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { Accordion, AccordionDetails, AccordionSummary, Button, CircularProgress } from "@mui/material"
 import { addOrder, getCartItems, removeCartItem } from "../utils/BookService"
 import { deleteCartItem, putCartList } from "../utils/store/cartSlice"
+import AddressCard from "./AddressCard"
 
 function Cart(){
     const books = useSelector((store:any)=> store.books.bookList)
@@ -16,7 +17,6 @@ function Cart(){
 
     const [expanded, setExpanded] = useState(false);
     const [expanded2, setExpanded2] = useState(false);
-    const [editAddress, setEditAddress] = useState(false);
 
     const placeOrder = ()=>{setExpanded(true)}
 
@@ -67,20 +67,7 @@ function Cart(){
                             <div className="w-[48%] flex flex-col"><label>Full Name</label><span className="px-5 py-2 h-[45px] border-2">{cartItems[0]?.user_id?.fullName}</span></div>
                             <div className="w-[48%] flex flex-col"><label>Mobile Number</label><span className="px-5 py-2 h-[45px] border-2">{cartItems[0]?.user_id?.phone}</span></div>
                         </div>
-                        {cartItems[0]?.user_id?.address?.map((useraddress:any,index:number)=>
-                        <div key={index}>
-                            <div className="mt-[50px] flex items-center"><input type="radio" name="address" checked/> <span className="p-1 text-[16px] font-bold">{index+1}. {useraddress.addressType}</span><a className="text-xs text-[#A03037] pl-[50px]" onClick={()=>setEditAddress(true)}>Edit</a></div>
-                            <div className="w-[80%] flex flex-col gap-1 mt-2">
-                            <span>Address</span>
-                            {editAddress?<div><input className="w-full px-5 py-2 min-h-[80px] border-2" defaultValue={useraddress.fullAddress}/>
-                            <div className="flex justify-between">
-                            <div className="w-[48%] flex flex-col"><label>City/Town</label><input type="text" className="px-5 py-2 h-[45px] border-2" defaultValue={useraddress.city}/></div>
-                            <div className="w-[48%] flex flex-col"><label>State</label><input type="text" className="px-5 py-2 h-[45px] border-2" defaultValue={useraddress.state}/></div>
-                            </div>
-                            <div className="flex justify-end"><Button variant="contained" size="small" onClick={()=>setEditAddress(false)}>Save</Button></div>
-                            </div>:<span>{useraddress.fullAddress+ ", "+useraddress.city+" , "+useraddress.state}</span>}
-                            </div>
-                        </div>)}
+                        {cartItems[0]?.user_id?.address?.map((useraddress:any,index:number)=><AddressCard useraddress={useraddress} index={index}/>)}
                         <div className={!expanded2?"flex justify-end":"hidden"}><Button variant="contained" sx={{width:"160px",backgroundColor:"#3371B5"}} onClick={orderAddress}>Countinue</Button></div>
                         </div>
                     </AccordionDetails>
