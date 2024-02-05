@@ -78,3 +78,11 @@ export async function getFeedback(productId:string){
     })
     return data
     }
+
+export async function editUserAddress(address:any){
+    let data:any
+    await axios.put(`${BASEURL}/edit_user`,address,configForBooks()).then(res=>{
+        data = res.data.result
+    })
+    return data
+    }
