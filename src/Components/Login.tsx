@@ -25,6 +25,7 @@ function Login(){
             password: password
           }
         await userLogin(userObj,navigate,setShowError)
+        localStorage.setItem("userName","Profile")
     } 
 
     return(

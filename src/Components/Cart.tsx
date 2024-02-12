@@ -23,12 +23,15 @@ function Cart(){
     const orderAddress = ()=>{setExpanded2(true)}
 
     const getCartList = async()=>{
+        if(localStorage.getItem("userName")){
         const cartList = await getCartItems()
         const bookList = cartList.map((cartBook:any)=>{return{...books.filter((book:any)=>book._id===cartBook.product_id._id)[0],cartId:cartBook._id,quantityToBuy:cartBook.quantityToBuy,user_id:cartBook.user_id}})
-        dispatch(putCartList(bookList))
+        dispatch(putCartList(bookList))}
     }
 
-    useEffect(()=>{getCartList()},[])
+    useEffect(()=>{getCartList()}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    ,[])
 
     const orderCheckout = async()=>{
         let storedData = []
@@ -39,11 +42,13 @@ function Cart(){
         const orderDate = getOrderDate[0].createdAt?.slice(0,10)
         storedData.push(cartItems.map((book:any)=>{return {...book,orderDate:orderDate}}))
         localStorage.setItem("MyOrders",JSON.stringify(storedData))
+        // eslint-disable-next-line
         cartItems.map((book:any)=>{removeCartItem(book.cartId);dispatch(deleteCartItem(book._id))})
     }
     return(
         <div className="w-full h-full flex justify-center">
-            {dataloaded?
+            {(localStorage.getItem("userName"))?
+            dataloaded?
             <div className="w-[80%] font-[Roboto]">
                 <div className="mt-[20px]">
                 <Link to={'/book'} className="text-[#9D9D9D]">Home /</Link>
@@ -83,7 +88,7 @@ function Cart(){
                         </div>
                     </AccordionDetails>
                 </Accordion>
-            </div>:<CircularProgress className="m-20"/>}
+            </div>:<CircularProgress className="m-20"/>:<h1 className="text-4xl p-20">Please Login!</h1>}
         </div>
     )
 }

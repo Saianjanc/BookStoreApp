@@ -36,24 +36,26 @@ function Header(){
     const cartItems = useSelector((store:any)=> store.cart.cartItems)
 
     const dispatch = useDispatch()
+    const username =  localStorage.getItem('userName')
 
     const getAllBooks = async() => {
         const data = await getBooks();
         const newData = data.map((book:any,index:number)=>{return{...book,bookImage:imagesList[index%8]}})
         dispatch(getBookList(newData))
+        if(username)setName(username)
     }
 
     const getCartList = async()=>{
-        if(books.length){
+        if(books.length&&username){
         const cartList = await getCartItems()
-        if(cartList.length){setName(cartList[0].user_id.fullName)}
+        if(cartList.length){localStorage.setItem('userName',cartList[0].user_id.fullName)}
         const bookList = cartList.map((cartBook:any)=>{return{...books.filter((book:any)=>book._id===cartBook.product_id._id)[0],cartId:cartBook._id,quantityToBuy:cartBook.quantityToBuy,user_id:cartBook.user_id}})
         dispatch(putCartList(bookList))
         }
     }
 
     const getWishList =async () => {
-        if(books.length){
+        if(books.length&&username){
         const wishList = await getWishlistItems()
         const bookList = wishList.map((wishBook:any)=>{return books.filter((book:any)=>book._id===wishBook.product_id._id)[0]})
         dispatch(putWishList(bookList))
@@ -61,12 +63,25 @@ function Header(){
             dispatch(setLoaded(true))
         }else if(!bookList.length){dispatch(setLoaded(true))}
         }
+        if(!username){
+            dispatch(setLoaded(true))
+        }
     }
 
-    useEffect(()=>{getAllBooks()},[])
-    useEffect(()=>{getCartList();getWishList()},[books])
+    const logout = () => {
+        localStorage.removeItem('accessToken')
+        localStorage.removeItem('userName')
+        window.location.reload()
+    }
 
-    return(<div className='w-full h-[60px] mt-0 flex items-center sticky top-0 bg-[#A03037] z-20 justify-around gap-20'>
+    useEffect(()=>{getAllBooks()}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    ,[])
+    useEffect(()=>{getCartList();getWishList()}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    ,[books])
+
+    return(<div className='w-full h-[60px] mt-0 flex items-center bg-[#A03037] z-20 justify-around gap-20'>
     <div className="w-[50%] flex gap-[42px]">
     <div className='h-[48px] pr-[30px]'>
         <Link to={'/book'} className='flex gap-[5px] items-center'>
@@ -88,11 +103,11 @@ function Header(){
     <Menu id="simple-menu" open={open} onClose={()=>setMenu(null)}
     anchorEl={menu}>
     <div className='w-[240px] flex flex-col gap-[12px] pl-8'>
-        <span className="font-bold">Hello {name},</span>
-        <Link to={'profile'}><PersonOutline/> Profile</Link>
+        {username?<span className="font-bold">Hello {name},</span>:<span className="font-bold">Welcome</span>}
+        {username?<Link to={'profile'}><PersonOutline/>Profile</Link>:<Link to={'/'} className="text-[12px] text-[#878787] mt-[-10px] mb-[10px]">To access account and manage orders<Button variant="outlined" sx={{width:'150px',height:'40px',borderColor:"#A03037",color:"#A03037",marginTop:"10px"}}>LOGIN/SIGNUP</Button></Link>}
         <Link to={'orders'}><MarkunreadMailboxOutlined/> My Orders</Link>
         <Link to={'wishlist'}><FavoriteBorder/> My Wishlist</Link>
-        <Button variant="outlined" sx={{width:'150px',height:'40px',borderColor:"#A03037",color:"#A03037"}}>Logout</Button>
+        {username?<Button variant="outlined" sx={{width:'150px',height:'40px',borderColor:"#A03037",color:"#A03037"}} onClick={logout}>Logout</Button>:<></>}
     </div>
   </Menu>
 </div>)
