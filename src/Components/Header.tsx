@@ -1,7 +1,7 @@
 import { FavoriteBorder, MarkunreadMailboxOutlined, PersonOutline, Search } from "@mui/icons-material";
 import { Badge, Button, InputAdornment, Menu, TextField } from "@mui/material"
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getBooks, getCartItems, getWishlistItems } from "../utils/BookService";
 import { getBookList } from "../utils/store/bookSlice";
 import logo from '../assets/logo.svg'
@@ -36,6 +36,7 @@ function Header(){
     const cartItems = useSelector((store:any)=> store.cart.cartItems)
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const username =  localStorage.getItem('userName')
 
     const getAllBooks = async() => {
@@ -74,6 +75,10 @@ function Header(){
         window.location.reload()
     }
 
+    const searchBook = (e:any) => {
+        navigate(`find/${e.target.value.toLowerCase()}`)
+    }
+
     useEffect(()=>{getAllBooks()}
     // eslint-disable-next-line react-hooks/exhaustive-deps
     ,[])
@@ -89,8 +94,8 @@ function Header(){
         <p className='text-white text-2xl font-sans'>Bookstore</p>
         </Link>
     </div>
-    <TextField className="w-[95%] h-full bg-white rounded" placeholder="Search" size="small" type="search"
-    InputProps={{startAdornment: (<InputAdornment position="start"><Search/></InputAdornment>)}}/></div>
+    <TextField className="w-[95%] h-full bg-white rounded" id="search" placeholder="Search" size="small" type="search"
+    onKeyUp={searchBook} InputProps={{startAdornment: (<InputAdornment position="start"><Search/></InputAdornment>)}}/></div>
     <div className='flex gap-20 items-center'>
         <div onClick={handleClick} className="flex flex-col items-center text-white"><PersonOutline sx={{color:"white", fontSize:30}}/><p>{name}</p></div>
         <Link to={"cart"} className="flex flex-col items-center text-white mt-[4px]">

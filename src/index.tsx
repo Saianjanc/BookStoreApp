@@ -11,6 +11,7 @@ import WishList from './Components/WishList';
 import MyOrders from './Components/MyOrders';
 import SuccessPage from './Components/SuccessPage';
 import ProfilePage from './Components/ProfilePage';
+import SearchBook from './Components/SearchBook';
 
 let router = createBrowserRouter([
   {
@@ -28,6 +29,14 @@ let router = createBrowserRouter([
       {
         path:':bookId',
         element:<BookDetails/>
+      },
+      {
+        path:'find',
+        element:<SearchBook/>,
+        children:[{
+          path:':bookName',
+          element:<SearchBook/>
+        }]
       },
       {
         path:'cart',

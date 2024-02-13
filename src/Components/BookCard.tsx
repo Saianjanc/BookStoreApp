@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 
 function BookCard({book}:{book:any}){
     return(
-        <Link to={book._id} className="w-[235px] h-[275px] rounded font-[Roboto] border-[#E2E2E2] border-2">
+        <Link to={`/book/${book._id}`} className="w-[235px] h-[275px] rounded font-[Roboto] border-[#E2E2E2] border-2">
             <div className="flex w-[233px] h-[172px] bg-[#F5F5F5] justify-center">
                 <img src={book.bookImage} alt={`${book.bookName} Img`} className="w-[105px] h-[135px] mt-5"/>
             </div>

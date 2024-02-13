@@ -19,7 +19,6 @@ export async function userLogin(userObj:object,navigate:Function,setShowError:Fu
       localStorage.setItem("accessToken",usertoken)
       if(usertoken){navigate("/book")}
       if(res.data.message){
-        console.log(res);
         setShowError(res.data.message)
       }
         }).catch(err => {
