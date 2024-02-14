@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import BookCard from "./BookCard"
 import { CircularProgress } from "@mui/material"
 import { getBookList } from "../utils/store/bookSlice"
@@ -11,6 +11,7 @@ function SearchBook(){
     const books = useSelector((store:any)=> store.books.bookList)
     const dispatch = useDispatch()
     const [book,setBook] = useState([])
+    const navigate = useNavigate()
 
     const sort = ()=>{
         const sortSelect = (document.getElementById("sortSelect") as HTMLInputElement).value
@@ -28,9 +29,10 @@ function SearchBook(){
             dispatch(getBookList(sortData))
         }
     }
-    useEffect(()=>{setBook(books.filter((ele:any)=>{if(ele.bookName.toLowerCase().includes(bookName.bookName))return(ele)}))},[books,bookName])
+    // eslint-disable-next-line
+    useEffect(()=>{setBook(books.filter((ele:any)=>{if(ele.bookName.toLowerCase().includes(bookName.bookName))return(ele)}));if(!bookName.bookName){navigate("/book")}},[books,bookName])
     
-    return(<div className="w-full h-full flex justify-center text-center">
+    return(<div className="w-full h-full flex justify-center">
     {dataloaded?
     <div className="w-[80%]">
     <div className="flex font-[Roboto] justify-between py-8">
@@ -48,7 +50,7 @@ function SearchBook(){
     {book.length?
     <div className="grid grid-cols-4 gap-[94px]">
         {book.map((book:any) => (<BookCard key={book._id} book={book}/>))}
-    </div>:<h1 className="text-4xl">Book Not Found! Enter a Book Name to Search</h1>}
+    </div>:<h1 className="text-4xl text-center">Book Not Found! Enter a Book Name to Search</h1>}
     </div>:<CircularProgress className="p-20"/>
     }
     </div>)
